@@ -10,7 +10,7 @@ pipeline {
       }
     }
     
-    stage ('Install dependencies') {
+   /* stage ('Install dependencies') {
       when {
         changeset "package.json"
       }
@@ -39,12 +39,22 @@ pipeline {
         echo 'run test..'
         sh 'npm run test'
       }
-    }
+    } */
     
+    
+    stage('docker-compose') {
+           steps {
+              sh "docker-compose build"
+              sh "docker-compose up -d"
+              
+           }
+       }
+   }
   }
   post {
     always {
       echo "Send notifications for result: ${currentBuild.result}"
+      sh "docker-compose down || true"
     }
   }
 }
