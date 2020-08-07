@@ -11,6 +11,9 @@ pipeline {
     }
     
     stage ('Install dependencies') {
+      when {
+        changeset "package.json"
+      }
       steps {
         echo 'install dependencies..'
         sh 'npm install'
@@ -18,10 +21,17 @@ pipeline {
     }
  
      stage ('Build project') {
-      steps {
-        echo 'build project'
-        sh 'npm run build:all'
-      }
+        when {
+          anyOf {
+            changeset "apps/**/*.ts"
+            changeset "libs/**/*.ts"
+            changeset "package.json"
+          }
+        }
+        steps {
+          echo 'build project'
+          sh 'npm run build:all'
+        }
     }
     
     stage ('Run test') {
