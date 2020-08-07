@@ -23,8 +23,8 @@ pipeline {
      stage ('Build project') {
         when {
           anyOf {
-            changeset "apps/**/*.ts"
-            changeset "libs/**/*.ts"
+            changeset "apps/**"
+            changeset "libs/**"
             changeset "package.json"
           }
         }
