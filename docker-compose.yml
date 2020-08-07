@@ -1,0 +1,31 @@
+version: '1'
+
+services: 
+
+# node container  #
+  api:
+    build: ./apps/api
+    expose: 
+      - ${APP_SERVER_PORT}
+    environment:
+      API_HOST: ${API_HOST}
+      APP_SERVER_PORT: ${APP_SERVER_PORT}
+    ports:
+      - {APP_SERVER_PORT}:${APP_SERVER_PORT}
+    volumes:
+      - .7apps/api/src:/apps/directory/api/src
+
+# client container  #
+  moonshot:
+    build: ./apps/moonshot
+    expose: 
+      - ${WEB_APP_PORT}
+    environment:
+      WEB_APP_PORT: ${WEB_APP_PORT}
+    ports:
+      - {WEB_APP_PORT}:${WEB_APP_PORT}
+    volumes:
+      - ./apps/moonshot/src:/apps/directory/moonshot/src
+    links:
+      - api
+    
